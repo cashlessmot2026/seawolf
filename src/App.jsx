@@ -497,6 +497,8 @@ function BookingModal({ item, onClose }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(null)
+  const mainRef = useRef(null)
+  useEffect(() => { if (done) mainRef.current?.scrollTo({ top: 0 }) }, [done])
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
 
   const fin = item.tipo === 'embarcacion' ? f.fecha_inicio : f.fecha_fin
@@ -545,7 +547,7 @@ function BookingModal({ item, onClose }) {
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal" role="dialog" aria-modal="true" aria-label={'Reservar ' + item.nombre}>
         <div className="side"><MiniSlider images={item.imagenes} /></div>
-        <div className="main">
+        <div className="main" ref={mainRef}>
           <button className="close" onClick={onClose} aria-label="Cerrar">×</button>
           {done ? (
             <>
